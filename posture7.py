@@ -6,7 +6,7 @@ import numpy as np
 matrixin=[]
 print(" ") #start with blank line
 
-with open('c:/PosturePLC/Sample.Table 2_17_10_25_06_47.csv', 'r', newline='') as csvfile:
+with open('./PosturePLC/Sample.Table 2_17_10_25_06_47.csv', 'r', newline='') as csvfile:
   csv_reader = csv.reader(csvfile)
 
   for i, row in enumerate(csv_reader):
@@ -160,3 +160,4 @@ for i in range(trials): #graphs or angles tested
 
   # Display the plot
   plt.show()
+
