@@ -6,7 +6,7 @@ import numpy as np
 matrixin=[]
 print(" ") #start with blank line
 
-with open('./Sample.Table 2_17_10_25_06_47.csv', 'r', newline='') as csvfile:
+with open('githubusercontent.com/clarkkeithf-sketch/Posturography/refs/heads/main/Sample.Table%202_17_10_25_06_47.csv?token=GHSAT0AAAAAADQCIWYPL3X7STKTPWIK4H322JHP2TA', 'r', newline='') as csvfile:
   csv_reader = csv.reader(csvfile)
 
   for i, row in enumerate(csv_reader):
