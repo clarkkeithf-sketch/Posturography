@@ -2,17 +2,47 @@ import csv
 import statistics
 import matplotlib.pyplot as plt
 import numpy as np
+import requests
+import io
+import os
+from urllib.parse import quote
 
 matrixin=[]
-print(" ") #start with blank line
 
-with open('githubusercontent.com/clarkkeithf-sketch/Posturography/refs/heads/main/Sample.Table%202_17_10_25_06_47.csv?token=GHSAT0AAAAAADQCIWYPL3X7STKTPWIK4H322JHP2TA', 'r', newline='') as csvfile:
-  csv_reader = csv.reader(csvfile)
+# original raw_url can be a github blob URL or a raw.githubusercontent URL
+raw_url = 'https://github.com/clarkkeithf-sketch/Posturography/blob/main/Sample.Table%202_17_10_25_06_47.csv'
+local_path = r'c:\PosturePLC\Posturography\Sample.Table 2_17_10_25_06_47.csv'
 
-  for i, row in enumerate(csv_reader):
-    current_angle=row[3]
-    if current_angle != '0':
-      matrixin.append(row)
+# convert a github "blob" URL into a raw.githubusercontent URL (and percent-encode the path)
+if 'github.com' in raw_url and '/blob/' in raw_url:
+    base, tail = raw_url.split('/blob/', 1)                 # base = https://github.com/user/repo
+    base = base.replace('https://github.com/', 'https://raw.githubusercontent.com/')
+    raw_url = base + '/' + quote(tail, safe='/')           # quote but keep '/' separators
+
+csvfile_obj = None
+try:
+    resp = requests.get(raw_url, timeout=10)
+    if resp.status_code == 200:
+        csvfile_obj = io.StringIO(resp.text)
+    else:
+        print(f"Remote returned {resp.status_code} for URL: {raw_url}")
+except requests.RequestException as e:
+    print(f"Request failed: {e}")
+
+if csvfile_obj is None:
+    if os.path.exists(local_path):
+        print(f"Falling back to local file: {local_path}")
+        csvfile_obj = open(local_path, 'r', newline='')
+    else:
+        raise SystemExit(f"File not found remotely or locally.\nTried: {raw_url}\nLocal: {local_path}")
+
+# create the CSV reader used below
+csv_reader = csv.reader(csvfile_obj)
+
+for i, row in enumerate(csv_reader):
+  current_angle=row[3]
+  if current_angle != '0':
+   matrixin.append(row)
 
 matrix = list(zip(*matrixin))
 
