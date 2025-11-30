@@ -110,7 +110,7 @@ def process_data():
 
         update_results(angle_list[i], lstdev, rstdev)
 
-    plot_data(angle_list, left_stdev, right_stdev)
+    plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, trials)
 
 def update_results(angle, left_stdev_val, right_stdev_val):
     result_div = document.getElementById("results")
@@ -119,9 +119,10 @@ def update_results(angle, left_stdev_val, right_stdev_val):
     result_div.innerHTML += f"RIGHT SENSOR Pval: {right_stdev_val:.0f}<br>"
     result_div.innerHTML += "<br>"
 
-def plot_data(angle_list, left_stdev, right_stdev):
+def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, trials):
     sum_stdev = [left_stdev[i] + right_stdev[i] for i in range(len(angle_list))]
 
+    # First graph - bar chart
     plt.figure(figsize=(6,4))
     bars = plt.bar(angle_list, sum_stdev, width=0.3, color='skyblue')
     try:
@@ -132,4 +133,26 @@ def plot_data(angle_list, left_stdev, right_stdev):
     plt.ylabel('Pvalue Sum')
     plt.title('Sensor Pvalue for each angle tested')
     plt.show()
-    plt.close()  # close the figure after showing
+    plt.close()
+
+    # Second set of graphs - individual line graphs per angle
+    list_sec = list(range(1, total_samples + 1))
+           
+    for i in range(trials):
+        leftx = left[i*total_samples:total_samples*(i+1)]
+        rightx = right[i*total_samples:total_samples*(i+1)]
+
+        x1 = np.array(list_sec)
+        y1 = np.array(leftx)
+        x2 = np.array(list_sec)
+        y2 = np.array(rightx)
+
+        plt.figure(figsize=(8, 5))
+        plt.plot(x1, y1, label='Left Sensor', color='blue', linestyle='-')
+        plt.plot(x2, y2, label='Right Sensor', color='red', linestyle='--')
+        plt.xlabel("Tenths of SECONDS")
+        plt.ylabel("Sensor Response")
+        plt.title(f"Posturography - Footfoundation {angle_list[i]} Degrees")
+        plt.legend()
+        plt.show()
+        plt.close()
