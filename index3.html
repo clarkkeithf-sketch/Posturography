@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <title>Posturography - PyScript</title>
+    <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:20px}</style>
+  </head>
+  <body>
+    <h1>Posturography CSV Viewer</h1>
+
+    <input id="csv_file" type="file" accept=".csv" />
+    <button id="load_button">Load & Analyze</button>
+
+    <div id="results" style="margin-top:1rem"></div>
+
+    <py-config>
+    packages = ["pandas", "matplotlib", "numpy"]
+    paths = ["."]
+    </py-config>
+
+    <py-script output="results">
+    import sys
+    from js import document
+    try:
+        import posture9
+        print("posture9 imported successfully")
+    except Exception as e:
+        print("Failed to import posture9:", e)
+        print("sys.path:", sys.path)
+    </py-script>
+
+  </body>
+</html>
