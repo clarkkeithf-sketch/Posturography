@@ -70,23 +70,23 @@ def process_data():
     angle = list(map(lambda x: int(x) / 100, matrix[3][1:]))
 
     trials = 0
-    total_samples = 1
     start_marker = 20
     angle_list = []
-
+    
+    # Find angle changes to count trials
     for pos, item in enumerate(angle):
-        if start_marker == item:
-            total_samples += 1
         if pos == 0:
             current_angle = item
             angle_list.append(item)
             trials += 1
             start_marker = item
-        if pos >= 1:
-            if current_angle != item:
-                current_angle = item
-                angle_list.append(item)
-                trials += 1
+        elif current_angle != item:
+            current_angle = item
+            angle_list.append(item)
+            trials += 1
+
+    # Calculate total_samples correctly: total data points / number of trials
+    total_samples = len(angle) // trials
 
     left_stdev = []
     right_stdev = []
