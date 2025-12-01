@@ -166,7 +166,7 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
         ax.plot(x2, y2, label='Right Sensor', color='red', linestyle='--')
         ax.set_xlabel("Tenths of SECONDS")
         ax.set_ylabel("Sensor Response")
-        ax.set_title(f"Figure {fig_num}: Posturography - Footfoundation {angle_list[i]} Degrees")
+        ax.set_title(f"Figure {fig_num}: Posturography - Foot Foundation {angle_list[i]} Degrees")
         ax.legend()
         plt.show()
         plt.close()
