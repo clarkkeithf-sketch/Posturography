@@ -2,17 +2,35 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <!-- use a release build and load as a module -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.2.1/core.css" />
     <script type="module" src="https://pyscript.net/releases/2024.2.1/core.js"></script>
     <title>Posturography - PyScript</title>
-    <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:20px}</style>
+    <style>
+      body {
+        font-family: system-ui, Segoe UI, Roboto, Arial;
+        margin: 20px;
+      }
+      #csv_file {
+        width: 400px;  /* make file input wider */
+        padding: 5px;
+        margin-right: 10px;
+      }
+      #load_button {
+        padding: 6px 20px;
+        cursor: pointer;
+      }
+      .controls {
+        margin-bottom: 20px;
+      }
+    </style>
   </head>
   <body>
     <h1>Posturography CSV Viewer</h1>
 
-    <input id="csv_file" type="file" accept=".csv" />
-    <button id="load_button">Load & Analyze</button>
+    <div class="controls">
+      <input id="csv_file" type="file" accept=".csv" />
+      <button id="load_button">Load & Analyze</button>
+    </div>
 
     <div id="results" style="margin-top:1rem"></div>
 
@@ -30,26 +48,21 @@
 
     async def setup():
         try:
-            # fetch posture9.py from the HTTP server
             resp = await fetch("posture9.py")
             if resp.status != 200:
                 results_div.innerHTML = f"Error: posture9.py not found on server (HTTP {resp.status})"
                 return
             
-            # read the file content
             text = await resp.text()
             
-            # write to Pyodide's virtual filesystem
             with open("posture9.py", "w") as f:
                 f.write(text)
             
             print("Fetched and wrote posture9.py to virtual FS")
             
-            # now import it
             import posture9
             print("posture9 imported successfully")
             
-            # bind button
             document.getElementById("load_button").addEventListener("click", create_proxy(posture9.load_csv))
             print("Bound load_button to posture9.load_csv")
             results_div.innerHTML = "Ready — select CSV and click Load & Analyze"
@@ -60,7 +73,6 @@
             import traceback
             traceback.print_exc()
 
-    # run async setup
     asyncio.create_task(setup())
     </py-script>
 

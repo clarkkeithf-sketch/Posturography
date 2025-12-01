@@ -122,7 +122,9 @@ def update_results(angle, left_stdev_val, right_stdev_val):
 def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, trials):
     sum_stdev = [left_stdev[i] + right_stdev[i] for i in range(len(angle_list))]
 
-    # First graph - bar chart
+    fig_num = 1  # counter for sequential figure numbering
+    
+    # Figure 1 - bar chart
     plt.figure(figsize=(6,4))
     bars = plt.bar(angle_list, sum_stdev, width=0.3, color='skyblue')
     try:
@@ -131,11 +133,12 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
         pass
     plt.xlabel('Angle Tested - left + right')
     plt.ylabel('Pvalue Sum')
-    plt.title('Sensor Pvalue for each angle tested')
+    plt.title(f'Figure {fig_num}: Sensor Pvalue for each angle tested')
     plt.show()
     plt.close()
+    fig_num += 1
 
-    # Second set of graphs - individual line graphs per angle
+    # Remaining figures - individual line graphs per angle
     list_sec = list(range(1, total_samples + 1))
            
     for i in range(trials):
@@ -152,7 +155,8 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
         plt.plot(x2, y2, label='Right Sensor', color='red', linestyle='--')
         plt.xlabel("Tenths of SECONDS")
         plt.ylabel("Sensor Response")
-        plt.title(f"Posturography - Footfoundation {angle_list[i]} Degrees")
+        plt.title(f"Figure {fig_num}: Posturography - Footfoundation {angle_list[i]} Degrees")
         plt.legend()
         plt.show()
         plt.close()
+        fig_num += 1  # increment for next figure
