@@ -168,7 +168,11 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
         ax.plot(x2, y2, label='Right Sensor', color='red', linestyle='--')
         ax.set_xlabel("Tenths of SECONDS")
         ax.set_ylabel("Sensor Response")
-        ax.set_title(f"Figure {fig_num}: Posturography - Foot Foundation {angle_list[i]} Degrees")
+        
+        # Add sum of standard deviations to title
+        stdev_sum = left_stdev[i] + right_stdev[i]
+        ax.set_title(f"Figure {fig_num}: Posturography - Foot Foundation {angle_list[i]} Degrees (Pval Sum: {stdev_sum})")
+        
         ax.legend()
         plt.show()
         plt.close()
