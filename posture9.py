@@ -125,15 +125,16 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
     fig_num = 1  # counter for sequential figure numbering
     
     # Figure 1 - bar chart
-    plt.figure(figsize=(6,4))
-    bars = plt.bar(angle_list, sum_stdev, width=0.3, color='skyblue')
+    fig, ax = plt.subplots(figsize=(6,4))
+    bars = ax.bar(angle_list, sum_stdev, width=0.3, color='skyblue')
     try:
-        plt.bar_label(bars)
+        ax.bar_label(bars)
     except Exception:
         pass
-    plt.xlabel('Angle Tested - left + right')
-    plt.ylabel('Pvalue Sum')
-    plt.title(f'Figure {fig_num}: Sensor Pvalue for each angle tested')
+    ax.set_xlabel('Angle Tested - left + right')
+    ax.set_ylabel('Pvalue Sum')
+    ax.set_title(f'Figure {fig_num}: Sensor Pvalue for each angle tested')
+    fig.canvas.header_visible = False  # hide the "Figure 1" header
     plt.show()
     plt.close()
     fig_num += 1
@@ -150,13 +151,14 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
         x2 = np.array(list_sec)
         y2 = np.array(rightx)
 
-        plt.figure(figsize=(8, 5))
-        plt.plot(x1, y1, label='Left Sensor', color='blue', linestyle='-')
-        plt.plot(x2, y2, label='Right Sensor', color='red', linestyle='--')
-        plt.xlabel("Tenths of SECONDS")
-        plt.ylabel("Sensor Response")
-        plt.title(f"Figure {fig_num}: Posturography - Footfoundation {angle_list[i]} Degrees")
-        plt.legend()
+        fig, ax = plt.subplots(figsize=(8, 5))
+        ax.plot(x1, y1, label='Left Sensor', color='blue', linestyle='-')
+        ax.plot(x2, y2, label='Right Sensor', color='red', linestyle='--')
+        ax.set_xlabel("Tenths of SECONDS")
+        ax.set_ylabel("Sensor Response")
+        ax.set_title(f"Figure {fig_num}: Posturography - Footfoundation {angle_list[i]} Degrees")
+        ax.legend()
+        fig.canvas.header_visible = False  # hide the "Figure 1" header
         plt.show()
         plt.close()
         fig_num += 1  # increment for next figure
