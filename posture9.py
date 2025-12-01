@@ -129,20 +129,27 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
     
     fig_num = 1  # counter for sequential figure numbering
     
-    # Figure 1 - bar chart
+    # Figure 1 - stacked bar chart showing left and right contributions
     fig, ax = plt.subplots(figsize=(6,4))
     fig.canvas.toolbar_visible = False
     fig.canvas.header_visible = False
     fig.canvas.footer_visible = False
     
-    bars = ax.bar(angle_list, sum_stdev, width=0.3, color='skyblue')
+    # Create stacked bars
+    bars1 = ax.bar(angle_list, left_stdev, width=0.3, color='blue', label='Left Sensor')
+    bars2 = ax.bar(angle_list, right_stdev, width=0.3, color='red', bottom=left_stdev, label='Right Sensor')
+    
+    # Add value labels on top of stacked bars (showing total)
     try:
-        ax.bar_label(bars)
+        for i, (angle, total) in enumerate(zip(angle_list, sum_stdev)):
+            ax.text(angle, total, str(total), ha='center', va='bottom')
     except Exception:
         pass
-    ax.set_xlabel('Angle Tested - left + right')
+    
+    ax.set_xlabel('Angle Tested')
     ax.set_ylabel('Pvalue Sum')
     ax.set_title(f'Figure {fig_num}: Sensor Pvalue for each angle tested')
+    ax.legend()
     plt.show()
     plt.close()
     fig_num += 1
