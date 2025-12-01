@@ -122,10 +122,17 @@ def update_results(angle, left_stdev_val, right_stdev_val):
 def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, trials):
     sum_stdev = [left_stdev[i] + right_stdev[i] for i in range(len(angle_list))]
 
+    # Disable the automatic "Figure X" label globally
+    plt.rcParams['figure.constrained_layout.use'] = False
+    
     fig_num = 1  # counter for sequential figure numbering
     
     # Figure 1 - bar chart
     fig, ax = plt.subplots(figsize=(6,4))
+    fig.canvas.toolbar_visible = False
+    fig.canvas.header_visible = False
+    fig.canvas.footer_visible = False
+    
     bars = ax.bar(angle_list, sum_stdev, width=0.3, color='skyblue')
     try:
         ax.bar_label(bars)
@@ -134,7 +141,6 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
     ax.set_xlabel('Angle Tested - left + right')
     ax.set_ylabel('Pvalue Sum')
     ax.set_title(f'Figure {fig_num}: Sensor Pvalue for each angle tested')
-    fig.canvas.header_visible = False  # hide the "Figure 1" header
     plt.show()
     plt.close()
     fig_num += 1
@@ -152,13 +158,16 @@ def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, t
         y2 = np.array(rightx)
 
         fig, ax = plt.subplots(figsize=(8, 5))
+        fig.canvas.toolbar_visible = False
+        fig.canvas.header_visible = False
+        fig.canvas.footer_visible = False
+        
         ax.plot(x1, y1, label='Left Sensor', color='blue', linestyle='-')
         ax.plot(x2, y2, label='Right Sensor', color='red', linestyle='--')
         ax.set_xlabel("Tenths of SECONDS")
         ax.set_ylabel("Sensor Response")
         ax.set_title(f"Figure {fig_num}: Posturography - Footfoundation {angle_list[i]} Degrees")
         ax.legend()
-        fig.canvas.header_visible = False  # hide the "Figure 1" header
         plt.show()
         plt.close()
-        fig_num += 1  # increment for next figure
+        fig_num += 1
