@@ -113,11 +113,13 @@ def process_data():
     plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, trials)
 
 def update_results(angle, left_stdev_val, right_stdev_val):
-    result_div = document.getElementById("results")
-    result_div.innerHTML += f"Angle: {angle:.2f} degrees<br>"
-    result_div.innerHTML += f"LEFT SENSOR Pval: {left_stdev_val:.0f}<br>"
-    result_div.innerHTML += f"RIGHT SENSOR Pval: {right_stdev_val:.0f}<br>"
-    result_div.innerHTML += "<br>"
+    # Comment out to hide text results - only show graphs
+    # result_div = document.getElementById("results")
+    # result_div.innerHTML += f"Angle: {angle:.2f} degrees<br>"
+    # result_div.innerHTML += f"LEFT SENSOR Pval: {left_stdev_val:.0f}<br>"
+    # result_div.innerHTML += f"RIGHT SENSOR Pval: {right_stdev_val:.0f}<br>"
+    # result_div.innerHTML += "<br>"
+    pass  # do nothing - just calculate, don't display
 
 def plot_data(angle_list, left_stdev, right_stdev, left, right, total_samples, trials):
     sum_stdev = [left_stdev[i] + right_stdev[i] for i in range(len(angle_list))]
